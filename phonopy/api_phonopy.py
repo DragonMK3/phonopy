@@ -800,6 +800,12 @@ class Phonopy:
 
     @masses.setter
     def masses(self, masses: Sequence[float] | NDArray[np.double]) -> None:
+        symbols_order = []
+        for s in self._primitive.symbols:
+            if s not in symbols_order:
+                symbols_order.append(s)
+        s_masses_map = dict(zip(symbols_order, masses))
+        masses = [s_masses_map[s] for s in self._primitive.symbols]
         p_masses = np.array(masses)
         self._primitive.masses = p_masses
         p2p_map = self._primitive.p2p_map
