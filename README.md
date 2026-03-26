@@ -3,6 +3,36 @@
 [![PyPI](https://img.shields.io/pypi/dm/phonopy.svg?maxAge=2592000)](https://pypi.python.org/pypi/phonopy)
 [![codecov](https://codecov.io/gh/phonopy/phonopy/branch/develop/graph/badge.svg)](https://codecov.io/gh/phonopy/phonopy)
 
+# Phonopy (Custom Version for Isotope/Defect Studies)
+
+**Note:** This is a forked version of the official Phonopy repository. It contains specific modifications to simplify workflows for studying isotope effects and defects.
+
+The official upstream repository can be found at: [https://github.com/phonopy/phonopy](https://github.com/phonopy/phonopy)
+
+---
+
+### Key Modifications in This Version
+
+The primary enhancement in this fork is an **intelligent mass expansion feature**.
+
+* **Problem Solved**: Standard Phonopy requires providing a mass for every atom in a pre-expanded supercell. This is impractical for large systems with isotopic or elemental substitutions.
+* **Solution**: The code in `phonopy/api_phonopy.py` (@masses.setter) has been modified. Now, you only need to provide a short list of masses in the `MASS` tag, corresponding to the unique atom types in your `POSCAR`. The code will automatically expand this to a full mass list for the supercell.
+
+### New Usage Example
+
+For a 64-atom supercell containing C-14 and N-14 (where C appears first in `POSCAR`), your `phonopy.conf` can now be written simply as:
+
+```ini
+ATOM_NAME = C N
+# No need to repeat the mass 64 times.
+# Just list the mass for each unique atom type in order of appearance.
+MASS = 14.003241989 14.003074004
+
+DIM = 1 1 1
+CREATE_DISPLACEMENTS = .TRUE.
+```
+
+
 # Phonopy
 
 Phonon code mainly written in python. Phonopy user documentation is found at
